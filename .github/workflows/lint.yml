@@ -36,7 +36,6 @@ jobs:
         with:
           version: ${{ inputs.golangci-lint-version }}
           args: --timeout ${{ inputs.timeout }}
-          skip-go-installation: true
 
   # Check if there are any dirty changes after go mod tidy
   check-mod:
