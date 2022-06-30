@@ -16,12 +16,12 @@ on:
       count:
         description: 'Number of benchmarks'
         default: 15
-        required: true
+        required: false
         type: number
       benchmark:
         description: 'Benchmark name regex'
         default: "Benchmark"
-        required: true
+        required: false
         type: string
       cpuprofile:
         description: 'CPU profile'
@@ -62,8 +62,8 @@ jobs:
           -v
           -count=${{ inputs.count }}
           -bench=${{ inputs.benchmark }}
-          -cpuprofile=${{ inputs.cpuprofile && "cpuprofile.out" }}
-          -memprofile=${{ inputs.memprofile && "memprofile.out" }}
+          -cpuprofile=${{ inputs.cpuprofile && 'cpuprofile.out' }}
+          -memprofile=${{ inputs.memprofile && 'memprofile.out' }}
           -run=$^ | tee bench.txt
 
       - name: Upload artifact (profile)
@@ -86,7 +86,8 @@ jobs:
       - name: Write action summary
         if: ${{ inputs.write-summary }}
         run: |
-          go run golang.org/x/tools/cmd/benchstat bench.txt | tee summary.txt
+          go get golang.org/x/perf/cmd/benchstat
+          go run golang.org/x/perf/cmd/benchstat bench.txt | tee summary.txt
           echo "## Benchmark results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
