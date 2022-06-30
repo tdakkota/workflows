@@ -62,6 +62,7 @@ jobs:
           -run=$^ | tee bench.txt
 
       - name: Upload artifact (profile)
+        if: ${{ inputs.cpuprofile || inputs.memprofile }}
         uses: actions/upload-artifact@v3
         with:
           name: profile
