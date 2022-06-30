@@ -33,6 +33,11 @@ on:
         default: false
         required: false
         type: boolean
+      write-summary:
+        description: 'Write github summary'
+        default: false
+        required: false
+        type: boolean
 
 
 jobs:
@@ -77,3 +82,13 @@ jobs:
           path: bench.txt
           if-no-files-found: error
           retention-days: 1
+
+      - name: Write action summary
+        if: ${{ inputs.write-summary }}
+        run: |
+          go run golang.org/x/tools/cmd/benchstat bench.txt | tee summary.txt
+          echo "## Benchmark results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          cat summary.txt >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
