@@ -5,7 +5,7 @@ on:
     inputs:
       go:
         description: 'Go version'
-        default: 1.18
+        default: ">=1.19"
         required: false
         type: string
 
@@ -21,6 +21,7 @@ jobs:
         with:
           cache: true
           go-version: ${{ inputs.go }}
+          check-latest: true
 
       - name: List dependencies
         run: go list -json -m all > go.list

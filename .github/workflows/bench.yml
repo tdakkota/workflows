@@ -5,7 +5,7 @@ on:
     inputs:
       go:
         description: 'Go version'
-        default: 1.18
+        default: ">=1.19"
         required: false
         type: string
       cache-prefix:
@@ -52,6 +52,7 @@ jobs:
         with:
           cache: true
           go-version: ${{ inputs.go }}
+          check-latest: true
 
       - name: Download dependencies
         run: go mod download && go mod tidy
